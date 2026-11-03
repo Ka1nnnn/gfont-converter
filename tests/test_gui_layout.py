@@ -73,8 +73,9 @@ def test_log_spans_full_window_width(app_window) -> None:
 
 def test_glyph_canvas_gets_remaining_width(app_window) -> None:
     root, app = app_window
-    assert app.canvas.winfo_width() > 500  # 1240 - 296 left - 250 right - paddings
-    assert root.winfo_width() == 1240
+    assert root.winfo_width() >= 980  # Tk minsize remains respected if the desktop clamps geometry
+    assert app.canvas.winfo_width() > app.left_canvas.winfo_width()
+    assert app.canvas.winfo_width() > app.detail_canvas.winfo_width()
     assert (
         app.canvas.winfo_rootx() + app.canvas.winfo_width()
         <= app.detail_canvas.winfo_rootx()
