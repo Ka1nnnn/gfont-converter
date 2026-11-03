@@ -1,0 +1,74 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gfont-converter"
+version = "1.1.1"
+description = "Read, validate and convert KDraw/Kenjoy .gfont vector-font containers (V3/V5/V6/V7/V8/V9 and bare ZIP), with a dark tkinter GUI, SVG/PNG export and headless CLI"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { file = "LICENSE" }
+authors = [{ name = "claudessh" }]
+keywords = ["gfont", "kdraw", "kenjoy", "font", "converter", "plotter", "vector"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Win32 (MS Windows)",
+    "Environment :: X11 Applications",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Multimedia :: Graphics",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Utilities",
+]
+# Runtime dependencies: none — standard library only (tkinter/ctypes for the GUI,
+# zipfile/struct/argparse for the core, zlib for the PNG encoder).
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest==9.1.1",
+    "ruff==0.16.1",
+    "pyinstaller==6.21.0",
+]
+
+[project.scripts]
+gfont-converter = "gfont_converter:main"
+
+[tool.setuptools]
+py-modules = ["gfont_converter", "glyph_render", "gfont_gui"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 110
+target-version = "py312"
+extend-exclude = ["build", "dist"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # import order
+    "B",   # bugbear
+    "UP",  # pyupgrade
+    "C4",  # comprehensions
+    "RUF", # ruff-specific
+]
+ignore = [
+    "RUF001", # cyrillic text in string literals (Russian UI strings)
+    "RUF002", # cyrillic text in docstrings
+    "RUF003", # cyrillic comments
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["E501"]
